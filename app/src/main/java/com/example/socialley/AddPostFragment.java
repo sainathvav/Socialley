@@ -317,10 +317,10 @@ public class AddPostFragment extends Fragment {
                     hashMap.put("uid", uid);
                     hashMap.put("uname", name);
                     hashMap.put("uemail", email);
-                    hashMap.put("udp", dp);
+                    hashMap.put("uimage", dp);
                     hashMap.put("title", titl);
                     hashMap.put("description", description);
-                    hashMap.put("uimage", downloadUri);
+                    hashMap.put("pimage", downloadUri);
                     hashMap.put("ptime", timestamp);
                     hashMap.put("plike", "0");
                     hashMap.put("pcomments", "0");
