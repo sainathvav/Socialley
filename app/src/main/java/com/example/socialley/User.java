@@ -1,10 +1,16 @@
 package com.example.socialley;
 
+import java.net.InterfaceAddress;
+import java.util.HashMap;
+import java.util.Hashtable;
+
+
 public class User {
     String username;
     String email;
     String password;
-
+    String id;
+    String profilePic;
     public User(){
 
     }
@@ -33,9 +39,27 @@ public class User {
         this.password = password;
     }
 
+    public void setProfilePic(String profilepic) {
+        this.profilePic = profilepic;
+    }
+
+    public String getProfilePic() {
+        return this.profilePic;
+    }
+
+
+    public void setID(String id) {
+        this.id = id;
+    }
+
+    public String getID() {
+        return this.id;
+    }
+
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.profilePic = "";
     }
 }

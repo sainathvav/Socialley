@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.socialley">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,11 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Socialley">
         <activity
-            android:name=".HomeActivity"
+            android:name=".ViewProfile"
             android:exported="true" />
         <activity
+            android:name=".HomeActivity"
+            android:exported="true"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".LoginActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".RegistrationActivity"
             android:exported="true" />
