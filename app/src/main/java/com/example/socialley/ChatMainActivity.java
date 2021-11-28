@@ -24,7 +24,7 @@ public class ChatMainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 //        getSupportActionBar().hide();
         mAuth = FirebaseAuth.getInstance();
-        Log.i("Place","You are in chat mainActivity");
+//        Log.i("Place","You are in chat mainActivity");
 
         binding.viewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager()));
         binding.tabLayout.setupWithViewPager(binding.viewPager);

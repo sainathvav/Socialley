@@ -2,65 +2,82 @@ package com.example.socialley.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.socialley.Adapters.StatusAdapter;
 import com.example.socialley.R;
+import com.example.socialley.User;
+import com.example.socialley.databinding.FragmentStatusBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StatusFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class StatusFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public StatusFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StatusFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StatusFragment newInstance(String param1, String param2) {
-        StatusFragment fragment = new StatusFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    FragmentStatusBinding binding;
+    ArrayList<User> list = new ArrayList<>();
+    FirebaseDatabase database;
+    FirebaseUser mAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_status, container, false);
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance().getCurrentUser();
+
+        binding = FragmentStatusBinding.inflate(inflater,container,false);
+
+        StatusAdapter adapter = new StatusAdapter(list,getContext());
+        binding.statusRecyclerView.setAdapter(adapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        binding.statusRecyclerView.setLayoutManager(linearLayoutManager);
+
+        // Now we are displaying all users from the database
+        database.getReference().child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+
+//                    Log.i("CurrentUser",mAuth.getUid().toString());
+//                    Log.i("Data Snapshot",dataSnapshot.getKey());
+                    User tempUser = dataSnapshot.getValue(User.class);
+                    tempUser.setUserId(dataSnapshot.getKey());
+                    if(dataSnapshot.getKey().equals(mAuth.getUid())){
+                        tempUser.setUsername("You");
+                    }
+
+                    list.add(tempUser);
+//                    Log.i("User",tempUser.getUserId());
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return binding.getRoot();
     }
 }

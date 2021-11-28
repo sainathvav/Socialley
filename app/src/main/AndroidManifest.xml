@@ -13,11 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Socialley">
-        <activity android:name=".GroupChatActivity"></activity>
+        <activity android:name=".StatusUpdate"></activity>
+        <activity android:name=".GroupChatActivity" />
         <activity android:name=".ChatDetailActivity" />
-        <activity android:name=".ChatMainActivity" >
-
-        </activity>
+        <activity android:name=".ChatMainActivity" />
         <activity
             android:name=".ViewProfile"
             android:exported="true" />
@@ -25,7 +24,6 @@
             android:name=".HomeActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="true"
@@ -41,7 +39,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

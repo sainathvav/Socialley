@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.socialley.ChatDetailActivity;
 import com.example.socialley.R;
 import com.example.socialley.User;
@@ -52,6 +53,16 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         User userDisplay = list.get(position);
 //        Picasso.get().load(userDisplay.getProfilePic()).placeholder(R.drawable.profile).into(holder.imageView);
+
+        if (!userDisplay.getProfilePic().equals("")) {
+            try {
+                Glide.with(context).load(userDisplay.getProfilePic()).into(holder.imageView);
+            }
+            catch (Exception e) {
+
+            }
+        }
+
         holder.userNameView.setText(userDisplay.getUsername());
 
         // For setting last message on view

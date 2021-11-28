@@ -49,10 +49,11 @@ public class ChatDetailActivity extends AppCompatActivity {
         binding.userNameChat.setText(userName);
 //        Picasso.get().load(profilePic).placeholder(R.drawable.profile).into(binding.profileImage);
 
+
         binding.backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChatDetailActivity.this,ChatMainActivity.class);
+                Intent intent = new Intent(ChatDetailActivity.this,HomeActivity.class);
                 startActivity(intent);
             }
         });

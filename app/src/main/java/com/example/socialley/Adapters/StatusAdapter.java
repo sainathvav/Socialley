@@ -3,6 +3,7 @@ package com.example.socialley.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.socialley.ChatDetailActivity;
 import com.example.socialley.R;
+import com.example.socialley.StatusUpdate;
 import com.example.socialley.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,7 +45,15 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User usersDisplay = list.get(position);
 
-        Picasso.get().load(usersDisplay.getProfilePic()).placeholder(R.drawable.profile).into(holder.imageView);
+//        Picasso.get().load(usersDisplay.getProfilePic()).placeholder(R.drawable.profile).into(holder.imageView);
+        if (!usersDisplay.getProfilePic().equals("")) {
+            try {
+                Glide.with(context).load(usersDisplay.getProfilePic()).into(holder.imageView);
+            }
+            catch (Exception e) {
+
+            }
+        }
 
         if(usersDisplay.getStatus()!=null)holder.statusMessage.setText(usersDisplay.getStatus());
 
@@ -50,6 +62,15 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.i("User",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                Log.i("User",usersDisplay.getUserId());
+                if(usersDisplay.getUserId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                    Intent intent= new Intent(context, StatusUpdate.class);
+                    context.startActivity(intent);
+                    return;
+                }
+
                 Intent intent= new Intent(context, ChatDetailActivity.class);
                 intent.putExtra("userId",usersDisplay.getUserId());
                 intent.putExtra("profilPic",usersDisplay.getProfilePic());

@@ -5,15 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewProfile">
+    tools:context=".ViewProfile"
+    android:padding="10dp"
+    >
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/other_profile_image"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_marginTop="50pt"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginTop="10pt"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_action_profile"
+        android:src="@drawable/profile"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp" />
 
@@ -123,7 +125,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:text="View Posts" />
+            android:text="View Posts"
+            android:layout_marginRight="10dp"
+            />
 
     </LinearLayout>
 

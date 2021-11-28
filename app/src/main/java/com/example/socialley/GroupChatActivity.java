@@ -37,7 +37,7 @@ public class GroupChatActivity extends AppCompatActivity {
         binding.backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(GroupChatActivity.this,ChatMainActivity.class);
+                Intent intent = new Intent(GroupChatActivity.this,HomeActivity.class);
                 startActivity(intent);
             }
         });

@@ -63,7 +63,7 @@ public class ChatsFragment extends Fragment {
 
 //                    Log.i("CurrentUser",mAuth.getUid().toString());
                     Log.i("Data Snapshot",dataSnapshot.getValue().toString());
-//                    if(dataSnapshot.getKey().equals(mAuth.getUid()))continue;
+                    if(dataSnapshot.getKey().equals(mAuth.getUid()))continue;
                     User tempUser = dataSnapshot.getValue(User.class);
                     tempUser.setUserId(dataSnapshot.getKey());
 

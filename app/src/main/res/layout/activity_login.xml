@@ -1,49 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/greyBackground"
+    android:paddingHorizontal="10dp"
 
-    <TextView
+    >
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:text="@string/Sign_in" />
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp">
 
-    <EditText
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            app:srcCompat="@drawable/chat_icon" />
+
+        <EditText
         android:id="@+id/sign_in_email"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4pt"
-        android:layout_marginTop="5pt"
-        android:layout_marginEnd="4pt"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:paddingHorizontal="10dp"
         android:focusable="true"
-        android:autofillHints="@string/email"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress" />
+        android:autofillHints="@string/email" />
 
     <EditText
         android:id="@+id/sign_in_password"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4pt"
-        android:layout_marginTop="5pt"
-        android:layout_marginEnd="5pt"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingHorizontal="10dp"
         android:focusable="true"
-        android:autofillHints="@string/password"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
+        android:autofillHints="@string/password" />
 
-    <Button style="@style/Widget.AppCompat.Button.Colored"
+        <TextView
+            android:id="@+id/clickSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="New User ?"
+            android:textStyle="bold" />
+
+    <Button
         android:id="@+id/sign_in_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textAllCaps="false"
-        android:textSize="13sp"
-        android:text="@string/sign_in" />
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/black"
+        android:text="sign in" />
 
+        <Button
+            android:id="@+id/btnGoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:backgroundTint="@color/white"
+            android:text="Google"
+            android:textColor="@color/black" />
+
+</LinearLayout>
 </LinearLayout>

@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.socialley.Fragments.ChatsFragment;
+import com.example.socialley.Fragments.StatusFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -48,19 +50,24 @@ public class HomeActivity extends AppCompatActivity{
                     return true;
 
                 case R.id.chat:
-//                    ChatsFragment chatfragment = new ChatsFragment();
-//                    FragmentTransaction chatfragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                    chatfragmentTransaction.replace(R.id.content, chatfragment, "");
-//                    chatfragmentTransaction.commit();
-                    Intent intentC = new Intent(HomeActivity.this,ChatMainActivity.class);
-                    startActivity(intentC);
+                    ChatsFragment chatfragment = new ChatsFragment();
+                    FragmentTransaction chatfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    chatfragmentTransaction.replace(R.id.content, chatfragment, "");
+                    chatfragmentTransaction.commit();
+//
+//                    Intent intentC = new Intent(HomeActivity.this,ChatMainActivity.class);
+//                    startActivity(intentC);
                     return true;
 
                 case R.id.friends:
-                    FriendsFragment friendsFragment = new FriendsFragment();
-                    FragmentTransaction friendsFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    friendsFragmentTransaction.replace(R.id.content, friendsFragment, "");
-                    friendsFragmentTransaction.commit();
+//                    FriendsFragment friendsFragment = new FriendsFragment();
+//                    FragmentTransaction friendsFragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                    friendsFragmentTransaction.replace(R.id.content, friendsFragment, "");
+//                    friendsFragmentTransaction.commit();
+                    StatusFragment statusfragment = new StatusFragment();
+                    FragmentTransaction statusfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    statusfragmentTransaction.replace(R.id.content, statusfragment, "");
+                    statusfragmentTransaction.commit();
                     return true;
 
                 case R.id.add_posts:
@@ -95,6 +102,8 @@ public class HomeActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             case R.id.action_logout:
                 FirebaseAuth.getInstance().signOut();
+                Intent intentL = new Intent(HomeActivity.this,LoginActivity.class);
+                startActivity(intentL);
                 return true;
             case R.id.action_all_users:
                 AllUsersFragment allUsersFragment = new AllUsersFragment();
