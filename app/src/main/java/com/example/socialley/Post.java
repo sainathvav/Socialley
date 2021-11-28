@@ -3,7 +3,7 @@ package com.example.socialley;
 public class Post {
     String title;
     String description;
-    String plike;
+    String plikes;
     String pcomments;
     String ptime;
     String pimage;
@@ -32,12 +32,12 @@ public class Post {
         this.description = description;
     }
 
-    public String getPlike() {
-        return plike;
+    public String getPlikes() {
+        return plikes;
     }
 
-    public void setPlike(String plike) {
-        this.plike = plike;
+    public void setPlikes(String plikes) {
+        this.plikes = plikes;
     }
 
     public String getPcomments() {

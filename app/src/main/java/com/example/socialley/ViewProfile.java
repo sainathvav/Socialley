@@ -2,9 +2,12 @@ package com.example.socialley;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +28,7 @@ public class ViewProfile extends AppCompatActivity {
 
     TextView usernameField, emailField, nationalityField, genderField, locationField;
     ImageView profilePicField;
+    Button viewProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class ViewProfile extends AppCompatActivity {
         genderField = findViewById(R.id.other_gender);
         locationField = findViewById(R.id.other_location);
         profilePicField = findViewById(R.id.other_profile_image);
+        viewProfile = findViewById(R.id.view_posts);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -82,5 +87,18 @@ public class ViewProfile extends AppCompatActivity {
         else {
             Toast.makeText(getApplicationContext(), "Unable to access account details", Toast.LENGTH_SHORT).show();
         }
+        viewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("type", "1");
+                bundle.putString("email", extras.getString("email"));
+                MyHomeFragment homefragment = new MyHomeFragment();
+                homefragment.setArguments(bundle);
+                FragmentTransaction homefragmentTransaction = getSupportFragmentManager().beginTransaction();
+                homefragmentTransaction.replace(R.id.viewcontent, homefragment, "");
+                homefragmentTransaction.commit();
+            }
+        });
     }
 }

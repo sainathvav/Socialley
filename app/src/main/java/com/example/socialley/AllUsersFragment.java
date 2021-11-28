@@ -1,13 +1,19 @@
 package com.example.socialley;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +38,7 @@ public class AllUsersFragment extends Fragment {
     CustomAdapter adapter;
     List<User> usersList;
     FirebaseAuth firebaseAuth;
+    String type;
 
     public AllUsersFragment() {
         // Required empty public constructor
@@ -77,9 +84,67 @@ public class AllUsersFragment extends Fragment {
         });
     }
 
+    private void search(final String s) {
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usersList.clear();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    User user = dataSnapshot1.getValue(User.class);
+                    if (user.getID() != null && !user.getID().equals(firebaseUser.getUid())) {
+                        if (user.getUsername().toLowerCase().contains(s.toLowerCase()) ||
+                                user.getEmail().toLowerCase().contains(s.toLowerCase())) {
+                            usersList.add(user);
+                        }
+                    }
+                    adapter = new CustomAdapter(getActivity(), usersList);
+                    recyclerView.setAdapter(adapter);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         //setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.top_nav_menu, menu);
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!TextUtils.isEmpty(query.trim())) {
+                    search(query);
+                } else {
+                    getAllUsers();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!TextUtils.isEmpty(newText.trim())) {
+                    search(newText);
+                } else {
+                    getAllUsers();
+                }
+                return false;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
