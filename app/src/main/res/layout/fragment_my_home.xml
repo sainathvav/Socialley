@@ -6,7 +6,29 @@
     android:background="#F1EDED"
     tools:context=".MyHomeFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/my_posts_btn"
+            android:layout_width="90pt"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="My Posts"/>
+
+        <Button
+            android:id="@+id/all_posts_btn"
+            android:layout_width="90pt"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="All Posts"/>
+
+    </LinearLayout>
+
     <ScrollView
+        android:layout_marginTop="20pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,15 +44,5 @@
         </RelativeLayout>
 
     </ScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/edit" />
 
 </RelativeLayout>

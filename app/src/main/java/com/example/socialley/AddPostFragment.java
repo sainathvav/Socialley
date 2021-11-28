@@ -324,7 +324,7 @@ public class AddPostFragment extends Fragment {
                     hashMap.put("description", description);
                     hashMap.put("pimage", downloadUri);
                     hashMap.put("ptime", timestamp);
-                    hashMap.put("plike", "0");
+                    hashMap.put("plikes", "0");
                     hashMap.put("pcomments", "0");
 
                     // set the data into firebase and then empty the title ,description and image data

@@ -43,14 +43,13 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
 
     Context context;
     String myuid;
-    private DatabaseReference liekeref, postref;
-    boolean mprocesslike = false;
+    private DatabaseReference likeref, postref;
 
     public CustomPostAdapter(Context context, List<Post> modelPosts) {
         this.context = context;
         this.posts = modelPosts;
         myuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        liekeref = FirebaseDatabase.getInstance().getReference().child("Likes");
+        likeref = FirebaseDatabase.getInstance().getReference().child("Likes");
         postref = FirebaseDatabase.getInstance().getReference().child("Posts");
     }
 
@@ -71,11 +70,11 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
         String description = posts.get(position).getDescription();
         String ptime = posts.get(position).getPtime();
         String pimage = posts.get(position).getPimage();
-        String plikes= posts.get(position).getPlike();
+        String plikes= posts.get(position).getPlikes();
         String uimage = posts.get(position).getUimage();
         String uemail = posts.get(position).getUemail();
         String pcomments = posts.get(position).getPcomments();
-        //final String pid = posts.get(position).getPtime();
+
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(Long.parseLong(ptime));
         String timedate = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
@@ -87,7 +86,9 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
         holder.like.setText(plikes + " Likes");
         holder.comments.setText(pcomments + " Comments");
 
-        //setLikes(holder, ptime);
+        if (posts.get(position).getUid().equals(FirebaseAuth.getInstance().getUid())) {
+            holder.deletebtn.setVisibility(View.VISIBLE);
+        }
         try {
             Glide.with(context).load(pimage).into(holder.picture);
         } catch (Exception e) {
@@ -100,26 +101,34 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
 
         }
 
+        postref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (position < posts.size() && !posts.isEmpty()) {
+                    String updatedLikes = snapshot.child(posts.get(position).getPtime()).child("plikes").getValue().toString();
+                    String updatedComments = snapshot.child(posts.get(position).getPtime()).child("pcomments").getValue().toString();
+                    holder.like.setText(updatedLikes + " Likes");
+                    holder.comments.setText(updatedComments + " Comments");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         holder.likebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int plike = Integer.parseInt(posts.get(position).getPlike());
-                mprocesslike = true;
+                final int plikes = Integer.parseInt(posts.get(position).getPlikes());
                 final String postid = posts.get(position).getPtime();
-                liekeref.addValueEventListener(new ValueEventListener() {
+                likeref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (mprocesslike) {
-                            if (dataSnapshot.child(postid).hasChild(myuid)) {
-                                postref.child(postid).child("plikes").setValue("" + (plike - 1));
-                                liekeref.child(postid).child(myuid).removeValue();
-                                mprocesslike = false;
-                            } else {
-                                postref.child(postid).child("plikes").setValue("" + (plike + 1));
-                                liekeref.child(postid).child(myuid).setValue("Liked");
-                                mprocesslike = false;
-                            }
+                            if (!dataSnapshot.child(postid).hasChild(myuid)) {
+                                postref.child(postid).child("plikes").setValue("" + (plikes + 1));
+                                likeref.child(postid).child(myuid).setValue("Liked");
                         }
                     }
 
@@ -130,6 +139,25 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
                 });
             }
         });
+
+        holder.deletebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (posts.get(position).getUid().equals(FirebaseAuth.getInstance().getUid())) {
+                    try {
+                        deletePost(posts.get(position).getPtime(), posts.get(position).getPimage());
+                    } catch (Exception e) {
+                        Toast.makeText(context.getApplicationContext(), "Unable to delete post", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else {
+                    Toast.makeText(context.getApplicationContext(), posts.get(position).getUid() + "+" + FirebaseAuth.getInstance().getUid(), Toast.LENGTH_LONG).show();
+                    System.out.println(posts.get(position).getUid());
+                    System.out.println(FirebaseAuth.getInstance().getUid());
+                }
+            }
+        });
+
     }
 
     private void deletePost(final String pid, String image) {
@@ -146,8 +174,6 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             dataSnapshot1.getRef().removeValue();
                         }
-                        pd.dismiss();
-                        Toast.makeText(context, "Deleted Successfully", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -155,6 +181,9 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
 
                     }
                 });
+
+                pd.dismiss();
+                Toast.makeText(context.getApplicationContext(), "Successfully deleted post", Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -174,7 +203,7 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
         ImageView picture, image;
         TextView name, time, title, description, like, comments;
         //ImageButton more;
-        ImageView likebtn, commentbtn;
+        ImageView likebtn, commentbtn, deletebtn;
         LinearLayout profile;
 
         public MyHolder(@NonNull View itemView) {
@@ -183,7 +212,7 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
             image = itemView.findViewById(R.id.uimage);
             name = itemView.findViewById(R.id.uname);
             time = itemView.findViewById(R.id.ptime);
-            //more = itemView.findViewById(R.id.morebtn);
+            deletebtn = itemView.findViewById(R.id.deletebtn);
             title = itemView.findViewById(R.id.title);
             description = itemView.findViewById(R.id.description);
             like = itemView.findViewById(R.id.plikes);
@@ -191,6 +220,7 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
             likebtn = itemView.findViewById(R.id.likebtn);
             commentbtn = itemView.findViewById(R.id.commentbtn);
             profile = itemView.findViewById(R.id.profilelayout);
+
         }
     }
 }

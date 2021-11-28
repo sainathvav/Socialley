@@ -17,15 +17,16 @@
         app:civ_border_width="2dp" />
 
     <LinearLayout
-        android:layout_marginTop="105pt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="105pt"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5pt"
+            android:layout_marginStart="5pt"
             android:gravity="center"
             android:text="Username : "
             android:textColor="@color/black"
@@ -40,13 +41,14 @@
             android:layout_weight="1"
             android:hint="@string/username" />
 
-        <Button style="@style/Widget.AppCompat.Button.Colored"
+        <Button
             android:id="@+id/update_username_button"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/update"
             android:textAllCaps="false"
-            android:textSize="13sp"
-            android:text="@string/update" />
+            android:textSize="13sp" />
 
     </LinearLayout>
 
@@ -60,11 +62,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5pt"
+            android:layout_marginStart="5pt"
             android:gravity="center"
             android:text="Password : "
             android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="bold" />
+
 
         <EditText
             android:id="@+id/edit_password"
@@ -84,6 +88,110 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_marginTop="165pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5pt"
+            android:gravity="center"
+            android:text="Date of Birth : Not Yet Set"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/dob"
+            android:layout_weight="1" />
+
+        <Button style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update"
+            android:textSize="13sp"
+            android:textAllCaps="false"
+            android:id="@+id/update_dob_button" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="195pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5pt"
+            android:layout_marginStart="5pt"
+            android:gravity="center"
+            android:text="Location : "
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/edit_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:hint="Location" />
+
+        <Button style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/update_location_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:textSize="13sp"
+            android:text="@string/update" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="225pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5pt"
+            android:layout_marginStart="5pt"
+            android:gravity="center"
+            android:text="Phone  : "
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/edit_phoneno"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:hint="Phone number" />
+
+        <Button style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/update_phoneno_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:textSize="13sp"
+            android:text="@string/update" />
+
+    </LinearLayout>
 
 </FrameLayout>
