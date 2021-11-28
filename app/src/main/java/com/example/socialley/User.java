@@ -9,11 +9,67 @@ public class User {
     String username;
     String email;
     String password;
-    String id;
+    String userId;
     String profilePic;
+    String lastMessage,status;
+
     public User(){
 
     }
+
+
+    public User(String username, String email, String password, String userId, String profilePic) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.userId = userId;
+        this.profilePic = profilePic;
+    }
+
+    public User(String username, String email, String password, String userId, String profilePic, String lastMessage) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.userId = userId;
+        this.profilePic = profilePic;
+        this.lastMessage = lastMessage;
+    }
+
+    public User(String username, String email, String password, String userId, String profilePic, String lastMessage, String status) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.userId = userId;
+        this.profilePic = profilePic;
+        this.lastMessage = lastMessage;
+        this.status = status;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
 
     public String getUsername() {
         return username;
@@ -48,13 +104,7 @@ public class User {
     }
 
 
-    public void setID(String id) {
-        this.id = id;
-    }
 
-    public String getID() {
-        return this.id;
-    }
 
     public User(String username, String email, String password) {
         this.username = username;

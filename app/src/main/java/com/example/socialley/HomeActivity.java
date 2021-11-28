@@ -48,10 +48,12 @@ public class HomeActivity extends AppCompatActivity{
                     return true;
 
                 case R.id.chat:
-                    ChatFragment chatfragment = new ChatFragment();
-                    FragmentTransaction chatfragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    chatfragmentTransaction.replace(R.id.content, chatfragment, "");
-                    chatfragmentTransaction.commit();
+//                    ChatsFragment chatfragment = new ChatsFragment();
+//                    FragmentTransaction chatfragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                    chatfragmentTransaction.replace(R.id.content, chatfragment, "");
+//                    chatfragmentTransaction.commit();
+                    Intent intentC = new Intent(HomeActivity.this,ChatMainActivity.class);
+                    startActivity(intentC);
                     return true;
 
                 case R.id.friends:
@@ -99,6 +101,12 @@ public class HomeActivity extends AppCompatActivity{
                 FragmentTransaction allUsersFragmentTransaction = getSupportFragmentManager().beginTransaction();
                 allUsersFragmentTransaction.replace(R.id.content, allUsersFragment, "");
                 allUsersFragmentTransaction.commit();
+                return true;
+
+            case R.id.chatRoom:
+                Toast.makeText(HomeActivity.this,"Chat Room",Toast.LENGTH_SHORT).show();
+                Intent intentG = new Intent(HomeActivity.this,GroupChatActivity.class);
+                startActivity(intentG);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

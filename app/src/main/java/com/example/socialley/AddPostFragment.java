@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +106,8 @@ public class AddPostFragment extends Fragment {
                     name = dataSnapshot1.child("username").getValue().toString();
                     email = "" + dataSnapshot1.child("email").getValue();
                     dp = "" + dataSnapshot1.child("profilePic").getValue().toString();
-                    uid = dataSnapshot1.child("id").getValue().toString();
+                    Log.i("UserId",dataSnapshot1.child("userId").getValue().toString());
+                    uid = dataSnapshot1.child("userId").getValue().toString();
                 }
             }
 

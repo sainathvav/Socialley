@@ -19,4 +19,8 @@
         android:title="@string/logout"
         android:icon="@drawable/ic_logout"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/chatRoom"
+        android:title="Chat Room"
+        />
 </menu>

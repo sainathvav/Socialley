@@ -34,7 +34,7 @@ public class ChatFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ChatFragment.
+     * @return A new instance of fragment ChatsFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static ChatFragment newInstance(String param1, String param2) {

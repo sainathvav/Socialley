@@ -71,11 +71,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                             Toast.makeText(RegistrationActivity.this, "ERROR", Toast.LENGTH_LONG).show();
                                         } else {
                                             User newuser = new User(username_text, email_text, password_text);
-                                            newuser.setID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                            newuser.setUserId(FirebaseAuth.getInstance().getCurrentUser().getUid());
                                             reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(newuser);
                                             Toast.makeText(RegistrationActivity.this, "Successfully Registered", Toast.LENGTH_LONG).show();
                                             startActivity(new Intent(RegistrationActivity.this, HomeActivity.class));
-                                            newuser.setID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                            newuser.setUserId(FirebaseAuth.getInstance().getCurrentUser().getUid());
                                             finish();
                                         }
                                     }
