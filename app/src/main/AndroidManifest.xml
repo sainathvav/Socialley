@@ -28,7 +28,15 @@
         <activity
             android:name=".UserListActivity"
             android:exported="true" />
-
+        <activity
+            android:name=".StatusUpdate"
+            android:exported="true"/>
+        <activity
+            android:name=".CommentActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true"
