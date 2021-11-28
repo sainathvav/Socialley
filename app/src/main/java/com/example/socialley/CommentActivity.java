@@ -100,6 +100,7 @@ public class CommentActivity extends AppCompatActivity {
         sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("Helllloooooooooo about to post");
                 postComment();
             }
         });
@@ -129,27 +130,6 @@ public class CommentActivity extends AppCompatActivity {
             }
         });
     }
-    /*private void setLikes() {
-        final DatabaseReference liekeref = FirebaseDatabase.getInstance().getReference().child("Likes");
-        liekeref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.child(postId).hasChild(myuid)) {
-                    likebtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_liked, 0, 0, 0);
-                    likebtn.setText("Liked");
-                } else {
-                    likebtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like, 0, 0, 0);
-                    likebtn.setText("Like");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }*///Code here
 
     private void postComment() {
         progressDialog.setMessage("Adding Comment");
@@ -162,7 +142,7 @@ public class CommentActivity extends AppCompatActivity {
         progressDialog.show();
         String timestamp = String.valueOf(System.currentTimeMillis());
         DatabaseReference commentsRef= FirebaseDatabase.getInstance().getReference("Posts").child(postId).child("Comments");
-        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -170,8 +150,10 @@ public class CommentActivity extends AppCompatActivity {
                 if (snapshot.exists()) {
                     User user = snapshot.getValue(User.class);
                     if (user!=null) {
-                        myname = user.getUsername();
-                        mydp = user.getProfilePic();
+                        System.out.println("Helllloooooooooo");
+                        System.out.println(user);
+                        myname = user.username;
+                        mydp = user.profilePic;
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "You are making a mistake", Toast.LENGTH_LONG).show();
@@ -235,7 +217,7 @@ public class CommentActivity extends AppCompatActivity {
     private void UserInfo() {
 
         Query myref = FirebaseDatabase.getInstance().getReference("users");
-        myref.orderByChild("id").equalTo(myuid).addListenerForSingleValueEvent(new ValueEventListener() {
+        myref.orderByChild("userId").equalTo(myuid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
@@ -267,8 +249,8 @@ public class CommentActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     String ptitle = dataSnapshot1.child("title").getValue().toString();
                     String descriptions = dataSnapshot1.child("description").getValue().toString();
-                    uimage = dataSnapshot1.child("uimage").getValue().toString();
-                    //hisdp = dataSnapshot1.child("uimage").getValue().toString();
+                    uimage = dataSnapshot1.child("pimage").getValue().toString();
+                    hisdp = dataSnapshot1.child("uimage").getValue().toString();
                     hisuid = dataSnapshot1.child("uid").getValue().toString();
                     String uemail = dataSnapshot1.child("uemail").getValue().toString();
                     hisname = dataSnapshot1.child("uname").getValue().toString();

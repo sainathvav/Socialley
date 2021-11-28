@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
@@ -61,6 +62,60 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyHolder> 
             } catch (Exception e) {
             }
         }
+        FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(holder.email.getText().toString()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    if (snapshot1.exists()) {
+                        User user = snapshot1.getValue(User.class);
+                        holder.currentUserID = user.getUserId();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        Query query = FirebaseDatabase.getInstance().getReference("Friends");
+        query.orderByChild(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        if (snapshot1.hasChild(holder.currentUserID)) {
+                            holder.isFriend = true;
+                            holder.addFriend.setText("Remove Friend");
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        holder.addFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!holder.isFriend) {
+                    FirebaseDatabase.getInstance().getReference("Friends").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(holder.currentUserID).setValue("friend");
+                    FirebaseDatabase.getInstance().getReference("Friends").child(holder.currentUserID).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue("friend");
+                    Toast.makeText(context.getApplicationContext(), "You are now friends with " + holder.name.getText(), Toast.LENGTH_LONG).show();
+                    holder.isFriend = true;
+                    holder.addFriend.setText("Remove Friend");
+                }
+                else {
+                    FirebaseDatabase.getInstance().getReference("Friends").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(holder.currentUserID).removeValue();
+                    FirebaseDatabase.getInstance().getReference("Friends").child(holder.currentUserID).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+                    Toast.makeText(context.getApplicationContext(), "You no longer friends with " + holder.name.getText(), Toast.LENGTH_LONG).show();
+                    holder.isFriend = false;
+                    holder.addFriend.setText("Add Friend");
+                }
+            }
+        });
     }
 
     @Override
@@ -79,6 +134,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyHolder> 
         FirebaseDatabase firebaseDatabase;
         DatabaseReference databaseReference;
 
+        String currentUserID;
+        Boolean isFriend;
+
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -92,6 +150,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyHolder> 
             email = itemView.findViewById(R.id.emailUser);
             addFriend = itemView.findViewById(R.id.add_friend);
 
+            currentUserID = "";
+            isFriend = false;
+
             name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -100,6 +161,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyHolder> 
                     itemView.getContext().startActivity(i);
                 }
             });
+
 
         }
     }

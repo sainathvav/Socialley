@@ -61,6 +61,7 @@ public class CustomCommentAdapter extends RecyclerView.Adapter<CustomCommentAdap
         calendar.setTimeInMillis(Long.parseLong(timestamp));
         String timedate = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
 
+        System.out.println("Username" + name);
         holder.name.setText(name);
         holder.time.setText(timedate);
         holder.comment.setText(comment);

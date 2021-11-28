@@ -73,7 +73,6 @@ public class UserListActivity extends AppCompatActivity {
 
                         }
                     }
-                    System.out.println(usersList);
                     adapter = new CustomAdapter(UserListActivity.this, usersList);
                     recyclerView.setAdapter(adapter);
                 }
@@ -116,6 +115,37 @@ public class UserListActivity extends AppCompatActivity {
                     }
                 });
             }
+        }
+        else if (type.equals("2")) {
+            Query query = FirebaseDatabase.getInstance().getReference("Friends").child(firebaseAuth.getUid());
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        String userString = snapshot1.getKey().toString();
+                        Query userQuery = FirebaseDatabase.getInstance().getReference("users").child(userString);
+                        usersList.clear();
+                        userQuery.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User user = snapshot.getValue(User.class);
+                                usersList.add(user);
+                                adapter = new CustomAdapter(UserListActivity.this, usersList);
+                                recyclerView.setAdapter(adapter);
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
     }
 }

@@ -59,10 +59,9 @@ public class HomeActivity extends AppCompatActivity{
                     return true;
 
                 case R.id.friends:
-                    FriendsFragment friendsFragment = new FriendsFragment();
-                    FragmentTransaction friendsFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    friendsFragmentTransaction.replace(R.id.content, friendsFragment, "");
-                    friendsFragmentTransaction.commit();
+                    Intent friendsIntent = new Intent(HomeActivity.this, UserListActivity.class);
+                    friendsIntent.putExtra("type", "2");
+                    startActivity(friendsIntent);
                     return true;
 
                 case R.id.add_posts:
