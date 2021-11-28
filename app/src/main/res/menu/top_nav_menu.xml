@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/statusView"
-        android:icon="@drawable/status"
-        android:title="Status"
-        app:showAsAction="always"></item>
 
     <item
         android:id="@+id/search"
@@ -20,7 +15,13 @@
         android:id="@+id/action_all_users"
         android:title="All users"
         android:icon="@drawable/ic_action_friends"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/statusView"
+        android:icon="@drawable/status"
+        android:title="Status"
+        app:showAsAction="always"></item>
 
     <item
         android:id="@+id/action_settings"
