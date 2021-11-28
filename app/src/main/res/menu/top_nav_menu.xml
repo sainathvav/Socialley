@@ -30,5 +30,6 @@
     <item
         android:id="@+id/chatRoom"
         android:title="Chat Room"
+        app:showAsAction="never"
         />
 </menu>

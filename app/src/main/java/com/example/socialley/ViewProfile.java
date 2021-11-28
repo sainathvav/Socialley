@@ -26,7 +26,7 @@ public class ViewProfile extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
-    TextView usernameField, emailField, nationalityField, genderField, locationField;
+    TextView usernameField, emailField, dobField, nationalityField, genderField, locationField;
     ImageView profilePicField;
     Button viewProfile;
 
@@ -40,6 +40,7 @@ public class ViewProfile extends AppCompatActivity {
 
         usernameField = findViewById(R.id.other_username);
         emailField = findViewById(R.id.other_email);
+        dobField = findViewById(R.id.other_dob);
         nationalityField = findViewById(R.id.other_nationality);
         genderField = findViewById(R.id.other_gender);
         locationField = findViewById(R.id.other_location);
@@ -66,9 +67,10 @@ public class ViewProfile extends AppCompatActivity {
 
                                     }
                                 }
-                                nationalityField.setText("Nationality : Indian");
-                                locationField.setText("Location : AP");
-                                genderField.setText("Gender : Male");
+                                dobField.setText("Gender : " + user.getDob());
+                                nationalityField.setText("Nationality : " + user.getNationality());
+                                locationField.setText("Location : " + user.getLocation());
+                                genderField.setText("Gender : " + user.getGender());
 
                             }
                         }

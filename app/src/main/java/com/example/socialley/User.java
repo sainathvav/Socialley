@@ -13,8 +13,14 @@ public class User {
     String profilePic;
     String lastMessage,status;
 
-    public User(){
+    String dob, location, nationality, phone, gender;
 
+    public User(){
+        dob = "";
+        location = "";
+        nationality = "";
+        phone = "";
+        gender = "";
     }
 
 
@@ -103,13 +109,55 @@ public class User {
         return this.profilePic;
     }
 
+    public String getDob() {
+        return dob;
+    }
 
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.profilePic = "";
+        dob = "";
+        location = "";
+        nationality = "";
+        phone = "";
+        gender = "";
     }
 }

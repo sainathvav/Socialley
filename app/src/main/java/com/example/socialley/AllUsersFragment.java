@@ -41,7 +41,7 @@ public class AllUsersFragment extends Fragment {
     String type;
 
     public AllUsersFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -118,33 +118,4 @@ public class AllUsersFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.top_nav_menu, menu);
-        MenuItem item = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (!TextUtils.isEmpty(query.trim())) {
-                    search(query);
-                } else {
-                    getAllUsers();
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (!TextUtils.isEmpty(newText.trim())) {
-                    search(newText);
-                } else {
-                    getAllUsers();
-                }
-                return false;
-            }
-        });
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 }

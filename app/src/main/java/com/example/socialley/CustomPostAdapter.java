@@ -86,7 +86,8 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
         holder.like.setText(plikes + " Likes");
         holder.comments.setText(pcomments + " Comments");
 
-        if (posts.get(position).getUid().equals(FirebaseAuth.getInstance().getUid())) {
+
+        if (!posts.isEmpty() && posts.get(position).getUid().equals(FirebaseAuth.getInstance().getUid())) {
             holder.deletebtn.setVisibility(View.VISIBLE);
         }
         try {
@@ -158,11 +159,31 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
             }
         });
 
+        holder.commentbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra("pid", ptime);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UserListActivity.class);
+                intent.putExtra("pid", ptime);
+                intent.putExtra("type", "1");
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     private void deletePost(final String pid, String image) {
         final ProgressDialog pd = new ProgressDialog(context);
         pd.setMessage("Deleting");
+
         StorageReference picref = FirebaseStorage.getInstance().getReferenceFromUrl(image);
         picref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -202,7 +223,6 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
     class MyHolder extends RecyclerView.ViewHolder {
         ImageView picture, image;
         TextView name, time, title, description, like, comments;
-        //ImageButton more;
         ImageView likebtn, commentbtn, deletebtn;
         LinearLayout profile;
 

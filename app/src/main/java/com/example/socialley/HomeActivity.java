@@ -16,8 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.socialley.Fragments.ChatsFragment;
-import com.example.socialley.Fragments.StatusFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -50,24 +48,15 @@ public class HomeActivity extends AppCompatActivity{
                     return true;
 
                 case R.id.chat:
-                    ChatsFragment chatfragment = new ChatsFragment();
-                    FragmentTransaction chatfragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    chatfragmentTransaction.replace(R.id.content, chatfragment, "");
-                    chatfragmentTransaction.commit();
-//
-//                    Intent intentC = new Intent(HomeActivity.this,ChatMainActivity.class);
-//                    startActivity(intentC);
+                    Intent intentC = new Intent(HomeActivity.this,ChatMainActivity.class);
+                    startActivity(intentC);
                     return true;
 
                 case R.id.friends:
-//                    FriendsFragment friendsFragment = new FriendsFragment();
-//                    FragmentTransaction friendsFragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                    friendsFragmentTransaction.replace(R.id.content, friendsFragment, "");
-//                    friendsFragmentTransaction.commit();
-                    StatusFragment statusfragment = new StatusFragment();
-                    FragmentTransaction statusfragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    statusfragmentTransaction.replace(R.id.content, statusfragment, "");
-                    statusfragmentTransaction.commit();
+                    FriendsFragment friendsFragment = new FriendsFragment();
+                    FragmentTransaction friendsFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    friendsFragmentTransaction.replace(R.id.content, friendsFragment, "");
+                    friendsFragmentTransaction.commit();
                     return true;
 
                 case R.id.add_posts:
@@ -87,6 +76,11 @@ public class HomeActivity extends AppCompatActivity{
         setContentView(R.layout.activity_home);
         bnv =  (NavigationBarView) findViewById(R.id.bottomNav);
         bnv.setOnItemSelectedListener(myListener);
+
+        MyHomeFragment homefragment = new MyHomeFragment();
+        FragmentTransaction homefragmentTransaction = getSupportFragmentManager().beginTransaction();
+        homefragmentTransaction.replace(R.id.content, homefragment, "");
+        homefragmentTransaction.commit();
     }
 
     @Override
@@ -102,14 +96,11 @@ public class HomeActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             case R.id.action_logout:
                 FirebaseAuth.getInstance().signOut();
-                Intent intentL = new Intent(HomeActivity.this,LoginActivity.class);
-                startActivity(intentL);
                 return true;
+
             case R.id.action_all_users:
-                AllUsersFragment allUsersFragment = new AllUsersFragment();
-                FragmentTransaction allUsersFragmentTransaction = getSupportFragmentManager().beginTransaction();
-                allUsersFragmentTransaction.replace(R.id.content, allUsersFragment, "");
-                allUsersFragmentTransaction.commit();
+                Intent intent = new Intent(HomeActivity.this, UserListActivity.class);
+                startActivity(intent);
                 return true;
 
             case R.id.chatRoom:
@@ -117,6 +108,12 @@ public class HomeActivity extends AppCompatActivity{
                 Intent intentG = new Intent(HomeActivity.this,GroupChatActivity.class);
                 startActivity(intentG);
                 return true;
+
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(HomeActivity.this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
