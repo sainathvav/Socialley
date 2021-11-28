@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.socialley.Fragments.ChatsFragment;
+import com.example.socialley.Fragments.StatusFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -48,8 +50,12 @@ public class HomeActivity extends AppCompatActivity{
                     return true;
 
                 case R.id.chat:
-                    Intent intentC = new Intent(HomeActivity.this,ChatMainActivity.class);
-                    startActivity(intentC);
+                    ChatsFragment chatsFragment = new ChatsFragment();
+                    FragmentTransaction chatfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    chatfragmentTransaction.replace(R.id.content, chatsFragment, "");
+                    chatfragmentTransaction.commit();
+//                    Intent intentC = new Intent(HomeActivity.this,ChatMainActivity.class);
+//                    startActivity(intentC);
                     return true;
 
                 case R.id.friends:
@@ -96,6 +102,8 @@ public class HomeActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             case R.id.action_logout:
                 FirebaseAuth.getInstance().signOut();
+                Intent intentL = new Intent(HomeActivity.this,RegistrationActivity.class);
+                startActivity(intentL);
                 return true;
 
             case R.id.action_all_users:
@@ -112,6 +120,12 @@ public class HomeActivity extends AppCompatActivity{
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(HomeActivity.this, SettingsActivity.class);
                 startActivity(settingsIntent);
+                return true;
+            case R.id.statusView:
+                StatusFragment statusFragment = new StatusFragment();
+                FragmentTransaction statusfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                statusfragmentTransaction.replace(R.id.content, statusFragment,"");
+                statusfragmentTransaction.commit();
                 return true;
 
             default:

@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/statusView"
+        android:icon="@drawable/status"
+        android:title="Status"
+        app:showAsAction="always"></item>
+
+    <item
         android:id="@+id/search"
         android:icon="@drawable/ic_search"
         android:title="Search"
