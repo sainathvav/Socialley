@@ -5,6 +5,7 @@ import static android.app.Activity.RESULT_OK;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -32,6 +33,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -39,6 +41,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -72,10 +76,12 @@ public class MyProfileFragment extends Fragment {
 
     String oldUsername;
     String oldPassword;
+    String uid;
 
     ImageView profilepic;
     Uri imageUri;
     ProgressBar pb;
+    ProgressDialog pd;
 
     Boolean start;
 
@@ -121,13 +127,13 @@ public class MyProfileFragment extends Fragment {
 
     ActivityResultLauncher<String> pickFromGallery =
             registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri uri) {
-                    imageUri = uri;
-                    uploadProfileCoverPhoto(imageUri);
-                }
-            });
+                    new ActivityResultCallback<Uri>() {
+                        @Override
+                        public void onActivityResult(Uri uri) {
+                            imageUri = uri;
+                            uploadProfileCoverPhoto(imageUri);
+                        }
+                    });
 
     ActivityResultLauncher<Intent> pickFromCamera =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -181,7 +187,11 @@ public class MyProfileFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
+        pd = new ProgressDialog(this.getContext());
+        pd.setCanceledOnTouchOutside(false);
 
     }
 
@@ -193,8 +203,6 @@ public class MyProfileFragment extends Fragment {
         update_password_button = view.findViewById(R.id.update_password_button);
         update_username_button = view.findViewById(R.id.update_username_button);
 
-        edit_password = view.findViewById(R.id.edit_password);
-        edit_username = view.findViewById(R.id.edit_username);
 
         profilepic = view.findViewById(R.id.profile_image);
 
@@ -248,13 +256,9 @@ public class MyProfileFragment extends Fragment {
         reference.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                usernameField = view.findViewById(R.id.edit_username);
-                passwordField = view.findViewById(R.id.edit_password);
                 if (dataSnapshot.exists()) {
-                    oldUsername = dataSnapshot.child("username").getValue().toString();
                     oldPassword = dataSnapshot.child("password").getValue().toString();
-                    usernameField.setText(oldUsername);
-                    passwordField.setText(oldPassword);
+
                     if (dataSnapshot.child("profilePic").getValue().toString() != "") {
                         try{
                             Glide.with(getActivity().getApplicationContext()).load(dataSnapshot.child("profilePic").getValue().toString()).into(profilepic);
@@ -279,33 +283,38 @@ public class MyProfileFragment extends Fragment {
         update_username_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newUsername = edit_username.getText().toString().trim();
-                if (TextUtils.isEmpty(newUsername)) {
-                    edit_username.setError("Username can't be empty");
-                    edit_username.requestFocus();
-                }
-                else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setMessage("Are you sure you want to change your username?");
-                    builder.setCancelable(false);
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("username").setValue(newUsername);
-                            oldUsername = newUsername;
-                            dialog.cancel();
+                pd.setMessage("Updating Name");
+                System.out.println("HELLO");
+                showNamephoneupdate("name");
+            }
+            private void showNamephoneupdate(final String key) {
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_update_name, null);
+                final EditText username = view.findViewById(R.id.update_username);
+                Button editname = view.findViewById(R.id.update_name);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setView(view);
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+                editname.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String usernam = username.getText().toString().trim();
+                        if (TextUtils.isEmpty(usernam)) {
+                            Toast.makeText(MyProfileFragment.this.getContext(), "New UserName can't be empty", Toast.LENGTH_LONG).show();
+                            return;
                         }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            usernameField.setText(oldUsername);
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }
+                        dialog.dismiss();
+                        updatename(usernam);
+                    }
+                });
+            }
+            private void updatename(final String usernam) {
+                pd.show();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("username").setValue(usernam);
+                pd.dismiss();
             }
 
         });
@@ -314,34 +323,67 @@ public class MyProfileFragment extends Fragment {
         update_password_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newPassword = edit_password.getText().toString().trim();
-                if (newPassword.length() < 8) {
-                    edit_password.setError("Password should be minimum 8 characters long");
-                    edit_password.requestFocus();
-                }
-                else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setMessage("Are you sure you want to change your password?");
-                    builder.setCancelable(false);
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("password").setValue(newPassword);
-                            FirebaseAuth.getInstance().getCurrentUser().updatePassword(newPassword);
-                            oldPassword = newPassword;
-                            dialog.cancel();
+                pd.setMessage("Changing Password");
+                showPasswordChangeDailog();
+            }
+
+            private void showPasswordChangeDailog() {
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_update_pswd, null);
+                final EditText oldpass = view.findViewById(R.id.oldpasslog);
+                final EditText newpass = view.findViewById(R.id.newpasslog);
+                Button editpass = view.findViewById(R.id.updatepass);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setView(view);
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                editpass.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String oldp = oldpass.getText().toString().trim();
+                        String newp = newpass.getText().toString().trim();
+                        if (TextUtils.isEmpty(oldp)) {
+                            Toast.makeText(MyProfileFragment.this.getContext(), "Current Password cant be empty", Toast.LENGTH_LONG).show();
+                            return;
                         }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            passwordField.setText(oldPassword);
-                            dialog.cancel();
+                        if (TextUtils.isEmpty(newp)) {
+                            Toast.makeText(MyProfileFragment.this.getContext(), "New Password cant be empty", Toast.LENGTH_LONG).show();
+                            return;
                         }
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }
+                        dialog.dismiss();
+                        updatePassword(oldp, newp);
+                    }
+                });
+            }
+            private void updatePassword(final String oldp, final String newp) {
+                pd.show();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
+                AuthCredential authCredential = EmailAuthProvider.getCredential(user.getEmail(), oldp);
+                user.reauthenticate(authCredential)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                user.updatePassword(newp)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                pd.dismiss();
+                                                Toast.makeText(MyProfileFragment.this.getContext(), "Changed Password", Toast.LENGTH_LONG).show();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        pd.dismiss();
+                                        Toast.makeText(MyProfileFragment.this.getContext(), "Failed", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        Toast.makeText(MyProfileFragment.this.getContext(), "Failed", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
