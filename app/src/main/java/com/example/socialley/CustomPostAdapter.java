@@ -197,6 +197,12 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
         picref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                try {
+                    FirebaseDatabase.getInstance().getReference("Likes").child(pid).removeValue();
+                }
+                catch (Exception e) {
+
+                }
                 Query query = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("ptime").equalTo(pid);
                 query.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -211,7 +217,6 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
 
                     }
                 });
-
                 pd.dismiss();
                 Toast.makeText(context.getApplicationContext(), "Successfully deleted post", Toast.LENGTH_LONG).show();
             }

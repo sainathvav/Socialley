@@ -58,7 +58,6 @@ public class AddPostFragment extends Fragment {
         // Required empty public constructor
     }
 
-    ActivityResultLauncher activityResultLauncher;
     FirebaseAuth firebaseAuth;
     EditText title , desc;
 
@@ -82,7 +81,7 @@ public class AddPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_add_post, container, false);
 
 
@@ -121,39 +120,13 @@ public class AddPostFragment extends Fragment {
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-
-
-        // Now we will upload out blog
-
-
-
-
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImagePicDialog();
-                //Intent intent = new Intent(MediaStore.IMA);
-                //activityResultLauncher.launch(intent);
 
             }
         });
-
-        /*activityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == getActivity().RESULT_OK) {
-                            if(result.getData()!=null){
-                                System.out.println("HELLO");
-                                imageuri = result.getData().getData();
-                                image.setImageURI(imageuri);
-                            }
-                        }
-                    }
-                });*/
-
-
 
         Upload_btn.setOnClickListener(new View.OnClickListener() {
             @Override

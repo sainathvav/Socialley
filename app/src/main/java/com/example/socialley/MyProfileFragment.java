@@ -68,11 +68,6 @@ public class MyProfileFragment extends Fragment {
     Button update_username_button;
     Button update_password_button;
 
-    EditText edit_username;
-    EditText edit_password;
-
-    EditText usernameField;
-    EditText passwordField;
 
     String oldUsername;
     String oldPassword;
@@ -84,13 +79,6 @@ public class MyProfileFragment extends Fragment {
     ProgressDialog pd;
 
     Boolean start;
-
-    private static final int CAMERA_REQUEST = 100;
-    private static final int STORAGE_REQUEST = 200;
-    private static final int IMAGE_PICK_GALLERY_REQUEST = 300;
-    private static final int IMAGE_PICK_CAMERA_REQUEST = 400;
-    String[] cameraPermission;
-    String[] storagePermission;
 
     public MyProfileFragment() {
         // Required empty public constructor
