@@ -87,6 +87,13 @@ public class HomeActivity extends AppCompatActivity{
         FragmentTransaction homefragmentTransaction = getSupportFragmentManager().beginTransaction();
         homefragmentTransaction.replace(R.id.content, homefragment, "");
         homefragmentTransaction.commit();
+
+        if(getIntent().getStringExtra("prevId")!=null){
+            ChatsFragment chatsFragment = new ChatsFragment();
+            FragmentTransaction chatfragmentTransaction = getSupportFragmentManager().beginTransaction();
+            chatfragmentTransaction.replace(R.id.content, chatsFragment, "");
+            chatfragmentTransaction.commit();
+        }
     }
 
     @Override

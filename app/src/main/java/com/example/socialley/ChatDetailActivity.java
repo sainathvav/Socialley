@@ -54,6 +54,7 @@ public class ChatDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChatDetailActivity.this,HomeActivity.class);
+                intent.putExtra("prevId",String.valueOf(R.id.chat));
                 startActivity(intent);
             }
         });
