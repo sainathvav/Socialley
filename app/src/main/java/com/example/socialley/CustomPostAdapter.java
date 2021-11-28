@@ -178,6 +178,15 @@ public class CustomPostAdapter extends RecyclerView.Adapter<com.example.socialle
             }
         });
 
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ViewProfile.class);
+                intent.putExtra("email", uemail);
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     private void deletePost(final String pid, String image) {

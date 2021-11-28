@@ -13,14 +13,21 @@
 
         <Button style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/my_posts_btn"
-            android:layout_width="90pt"
+            android:layout_width="58pt"
             android:layout_height="wrap_content"
             android:visibility="invisible"
             android:text="My Posts"/>
 
         <Button style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/friends_posts_btn"
+            android:layout_width="58pt"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="Friend Posts"/>
+
+        <Button style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/all_posts_btn"
-            android:layout_width="90pt"
+            android:layout_width="58pt"
             android:layout_height="wrap_content"
             android:visibility="invisible"
             android:text="All Posts"/>

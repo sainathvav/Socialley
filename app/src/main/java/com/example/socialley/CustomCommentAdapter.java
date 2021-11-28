@@ -50,15 +50,15 @@ public class CustomCommentAdapter extends RecyclerView.Adapter<CustomCommentAdap
 
     @Override
     public void onBindViewHolder(@NonNull CustomCommentAdapter.MyHolder holder, int position) {
-        String uid = list.get(position).getUid();
         String name = list.get(position).getUname();
         String email = list.get(position).getUemail();
         String image = list.get(position).getUdp();
-        final String cid = list.get(position).getcId();
+
         String comment = list.get(position).getComment();
         String timestamp = list.get(position).getPtime();
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(Long.parseLong(timestamp));
+
         String timedate = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
 
         System.out.println("Username" + name);
@@ -66,11 +66,24 @@ public class CustomCommentAdapter extends RecyclerView.Adapter<CustomCommentAdap
         holder.time.setText(timedate);
         holder.comment.setText(comment);
         try {
-            Glide.with(context).load(image).into(holder.imagea);
+            Glide.with(context).load(image).into(holder.userImage);
         } catch (Exception e) {
+            try {
+                Glide.with(context).load(R.drawable.ic_action_profile).into(holder.userImage);
+            }
+            catch (Exception f) {
 
+            }
         }
 
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context.getApplicationContext(), ViewProfile.class);
+                intent.putExtra("email", email);
+                context.startActivity(intent);
+            }
+        });
 
     }
 
@@ -82,13 +95,13 @@ public class CustomCommentAdapter extends RecyclerView.Adapter<CustomCommentAdap
 
     class MyHolder extends RecyclerView.ViewHolder {
 
-        ImageView imagea;
+        ImageView userImage;
         TextView name, comment, time;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
-            imagea = itemView.findViewById(R.id.loadcomment);
-            name = itemView.findViewById(R.id.commentname);
+            userImage = itemView.findViewById(R.id.userImage);
+            name = itemView.findViewById(R.id.commentUser);
             comment = itemView.findViewById(R.id.commenttext);
             time = itemView.findViewById(R.id.commenttime);
         }

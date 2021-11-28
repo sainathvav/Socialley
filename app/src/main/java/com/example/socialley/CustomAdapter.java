@@ -56,9 +56,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyHolder> 
         String userEmail = list.get(position).getEmail();
         holder.name.setText(userName);
         holder.email.setText(userEmail);
-        if (userProfilePic != "") {
+        if (!userProfilePic.equals("")) {
             try {
                 Glide.with(context).load(userProfilePic).into(holder.profilePic);
+            } catch (Exception e) {
+            }
+        }
+        else {
+            try {
+                Glide.with(context).load(R.drawable.ic_action_profile).into(holder.profilePic);
             } catch (Exception e) {
             }
         }

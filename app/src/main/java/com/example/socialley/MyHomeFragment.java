@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MyHomeFragment extends Fragment {
@@ -48,7 +49,7 @@ public class MyHomeFragment extends Fragment {
     String uid;
     ProgressDialog pd;
     String type, email;
-    Button myPosts, allPosts;
+    Button myPosts, friendsPosts, allPosts;
     Boolean active;
 
     public MyHomeFragment() {
@@ -79,10 +80,12 @@ public class MyHomeFragment extends Fragment {
         uid = FirebaseAuth.getInstance().getUid();
         postrecycle = view.findViewById(R.id.recyclerposts);
         myPosts = view.findViewById(R.id.my_posts_btn);
+        friendsPosts = view.findViewById(R.id.friends_posts_btn);
         allPosts = view.findViewById(R.id.all_posts_btn);
 
         if (type.equals("0") || (type.equals("1") && email.equals(firebaseAuth.getCurrentUser().getEmail()))) {
             myPosts.setVisibility(View.VISIBLE);
+            friendsPosts.setVisibility(View.VISIBLE);
             allPosts.setVisibility(View.VISIBLE);
             active = true;
         }
@@ -99,6 +102,21 @@ public class MyHomeFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putString("type", "1");
                     bundle.putString("email", firebaseAuth.getCurrentUser().getEmail());
+                    MyHomeFragment homefragment = new MyHomeFragment();
+                    homefragment.setArguments(bundle);
+                    FragmentTransaction homefragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    homefragmentTransaction.replace(R.id.content, homefragment, "");
+                    homefragmentTransaction.commit();
+                }
+            }
+        });
+
+        friendsPosts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (active) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", "2");
                     MyHomeFragment homefragment = new MyHomeFragment();
                     homefragment.setArguments(bundle);
                     FragmentTransaction homefragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -130,27 +148,68 @@ public class MyHomeFragment extends Fragment {
         postrecycle.setLayoutManager(layoutManager);
 
         Query query = FirebaseDatabase.getInstance().getReference("Posts");
-        if (type.equals("1")) {
-            query = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("uemail").equalTo(email);
+
+        if (type.equals("1") || type.equals("0")) {
+            if (type.equals("1")) {
+                query = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("uemail").equalTo(email);
+            }
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    posts.clear();
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        Post post = dataSnapshot1.getValue(Post.class);
+                        posts.add(post);
+                    }
+                    adapterPosts = new CustomPostAdapter(getActivity(), posts);
+                    postrecycle.setAdapter(adapterPosts);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        else if (type.equals("2")) {
+            Query query2 = FirebaseDatabase.getInstance().getReference("Friends").child(firebaseUser.getUid());
+            HashMap<String, String> friends;
+            friends = new HashMap<String, String>();
+            query2.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        friends.put(snapshot1.getKey(), "friend");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            Query query3 = FirebaseDatabase.getInstance().getReference("Posts");
+            query3.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    posts.clear();
+                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        Post post = snapshot1.getValue(Post.class);
+                        if (friends.containsKey(post.getUid())) {
+                            posts.add(post);
+                        }
+                    }
+                    adapterPosts = new CustomPostAdapter(getActivity(), posts);
+                    postrecycle.setAdapter(adapterPosts);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
 
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                posts.clear();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    Post post = dataSnapshot1.getValue(Post.class);
-                    posts.add(post);
-                }
-                adapterPosts = new CustomPostAdapter(getActivity(), posts);
-                postrecycle.setAdapter(adapterPosts);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     @Override

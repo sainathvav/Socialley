@@ -48,7 +48,7 @@
                     android:id="@+id/ptime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="33 min" />
+                    android:text="Time" />
 
             </LinearLayout>
 
