@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "421021110641",
-    "project_id": "socialley-4e629",
-    "storage_bucket": "socialley-4e629.appspot.com"
+    "project_number": "261110857192",
+    "firebase_url": "https://socialley-47689-default-rtdb.firebaseio.com",
+    "project_id": "socialley-47689",
+    "storage_bucket": "socialley-47689.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:421021110641:android:3a2205b5da5c1abed8a6d0",
+        "mobilesdk_app_id": "1:261110857192:android:e873d85aeb641f177bf85d",
         "android_client_info": {
           "package_name": "com.example.socialley"
         }
       },
       "oauth_client": [
         {
-          "client_id": "421021110641-e2i79gtsqa0u084p904oks858u96e66p.apps.googleusercontent.com",
+          "client_id": "261110857192-h9grtdmlh8u4f3hk4tk5kduod3b8snkk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCyWO2L5dhmFyYP4yDcutj02leVPcyhB1A"
+          "current_key": "AIzaSyDwQg853uO122AnewLCZvctpxuz8YG6tGw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "421021110641-e2i79gtsqa0u084p904oks858u96e66p.apps.googleusercontent.com",
+              "client_id": "261110857192-h9grtdmlh8u4f3hk4tk5kduod3b8snkk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
